@@ -1,18 +1,28 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import io from 'socket.io-client';
+import Item from './Item';
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { items: [] };
+
+    const socket = io('http://localhost:3001');
+    socket.on('items', (items) => {
+     this.setState({ items });
+    });
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <ul>
+          {this.state.items.map((item) => (
+              <Item key={item._id} name={item.name} quantity={item.quantity} />
+          ))}
+        </ul>
       </div>
     );
   }
