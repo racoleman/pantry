@@ -1,5 +1,3 @@
-const http = require('http').Server();
-const io = require('socket.io')(http);
 const MongoClient = require('mongodb').MongoClient;
 const MongoOplog = require('mongo-oplog');
 const querystring = require('querystring');
@@ -10,6 +8,9 @@ const mongoEventMap = {
 	i: 'insert',
 	u: 'update'
 };
+
+const http = require('http').createServer();
+const io = require('socket.io')(http);
 
 function getDbURI(dbName) {
 	let url = `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}`;
@@ -22,7 +23,10 @@ let oplog, collection;
 
 const app = {
 	init() {
+		http.listen(3001);
+
 		this.initDb();
+		this.initSocket();
 		this.initOplog();
 	},
 
@@ -34,6 +38,19 @@ const app = {
 		} catch(err) {
 			console.error(err);
 		}
+	},
+
+	initSocket() {
+		io.on('connection', async (socket) => {
+			console.log('User connected');
+
+			const items = await collection.find().toArray();
+			socket.emit('items', items);
+		});
+
+		io.on('disconnection', () => {
+			console.log('User disconnected');
+		});
 	},
 
 	async initOplog() {
