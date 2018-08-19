@@ -1,5 +1,6 @@
 const http = require('http').Server();
 const io = require('socket.io')(http);
+const MongoClient = require('mongodb').MongoClient;
 const MongoOplog = require('mongo-oplog');
 const querystring = require('querystring');
 const config = require('./config');
@@ -11,28 +12,40 @@ const mongoEventMap = {
 };
 
 function getDbURI(dbName) {
-	const dbQuerystring = querystring.stringify(config.DB_QUERY_PARAMS);
-	return `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}/${dbName}?${dbQuerystring}`;
+	let url = `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}`;
+	if (dbName) url += `/${dbName}`;
+	url += `?${querystring.stringify(config.DB_QUERY_PARAMS)}`;
+	return url;
 }
 
-let oplog;
+let oplog, collection;
 
 const app = {
 	init() {
-		oplog = MongoOplog(getDbURI('local'));
-		oplog.tail()
-			.then(() => {
-				console.log('Tailing Mongo oplog');
-				this.bindOplogEvents();
-			})
-			.catch((err) => {
-				console.log(err);
-			});
+		this.initDb();
+		this.initOplog();
 	},
 
-	bindOplogEvents() {
-		oplog.on('op', this.proxyDbEvent);
-		oplog.on('error', console.error);
+	async initDb() {
+		try {
+			const client = await MongoClient.connect(getDbURI());
+			collection = client.db(config.DB_NAME).collection(config.DB_COLLECTION);
+			console.log('Connected to Mongo database');
+		} catch(err) {
+			console.error(err);
+		}
+	},
+
+	async initOplog() {
+		oplog = MongoOplog(getDbURI('local'));
+		try {
+			await oplog.tail();
+			console.log('Tailing Mongo oplog');
+			oplog.on('op', this.proxyDbEvent);
+			oplog.on('error', console.error);
+		} catch(err) {
+			console.error(err);
+		}
 	},
 
 	proxyDbEvent({ ns, op: event, o: data }) {
