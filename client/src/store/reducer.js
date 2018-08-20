@@ -15,7 +15,7 @@ const reducer = (state = [], { type, data }) => {
 		}
 		case actionConstants.DELETE_ITEM: {
 			const deleteIdx = items.findIndex((item) => item._id === data._id);
-			items.splice(deleteIdx, 1);
+			if (deleteIdx >= 0) items.splice(deleteIdx, 1);
 			return items;
 		}
 		default:

@@ -75,3 +75,19 @@ test('Deletes the appropriate item', (t) => {
 	t.notDeepEqual(initialState, newState, 'Delete was immutable');
 	t.end();
 });
+
+test('Deletes nothing when invalid item is given', (t) => {
+	const initialState = getInitialState();
+	const itemToRemove = {
+		_id: -1,
+		name: 'Mango',
+		quantity: 1
+	}
+	const newState = reducer(initialState, {
+		type: actionConstants.DELETE_ITEM,
+		data: itemToRemove
+	});
+
+	t.deepEqual(initialState, newState, 'State did not change');
+	t.end();
+});
