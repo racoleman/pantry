@@ -1,4 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient, ObjectID } = require('mongodb');
 const querystring = require('querystring');
 const socketIo = require('socket.io');
 const config = require('./config');
@@ -39,6 +39,22 @@ const app = {
 			socket.emit('action', {
 				type: actionConstants.SET_ITEMS,
 				data: items
+			});
+
+			socket.on('action', ({ type, data }) => {
+				const filter = { _id: new ObjectID(data._id) };
+				switch (type) {
+					case actionConstants.ADD_ITEM:
+						collection.insertOne(data);
+						break;
+					case actionConstants.UPDATE_ITEM:
+						delete data._id;
+						collection.findOneAndUpdate(filter, { $set: data });
+						break;
+					case actionConstants.DELETE_ITEM:
+						collection.findOneAndDelete(filter);
+						break;
+				}
 			});
 		});
 

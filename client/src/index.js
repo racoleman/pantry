@@ -1,18 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import io from 'socket.io-client';
+import thunk from 'redux-thunk';
 import { setItems, addItem, updateItem, deleteItem } from './store/actions';
 import reducer from './store/reducer';
 import { actionConstants } from './store/actionConstants';
+import socketClient from './socketClient';
 import './index.css';
 import App from './components/App';
 
-const store = createStore(reducer);
+const store = createStore(reducer, [], applyMiddleware(thunk));
 
-const socket = io('http://localhost:3001');
-socket.on('action', ({ type, data }) => {
+socketClient.on('action', ({ type, data }) => {
 	switch(type) {
 		case actionConstants.SET_ITEMS:
 			store.dispatch(setItems(data));

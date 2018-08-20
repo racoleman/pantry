@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { updateItem, deleteItem } from '../store/actions';
+import { emitAction } from '../socketClient';
 import Item from './Item';
 
 function mapStateToProps(state) {
@@ -10,10 +11,10 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
 	return {
 		onChange(item) {
-			dispatch(updateItem(item));
+			dispatch(emitAction(updateItem(item)));
 		},
 		onDeleteClick(item) {
-			dispatch(deleteItem(item));
+			dispatch(emitAction(deleteItem(item)));
 		}
 	}
 }
