@@ -4,6 +4,7 @@ const socketIo = require('socket.io');
 const config = require('./config');
 const utils = require('./utils');
 const getOplogDispatcher = require('./dispatch/getOplogDispatcher');
+const { actionConstants } = require('./actionConstants');
 
 const http = require('http').createServer();
 
@@ -35,7 +36,10 @@ const app = {
 			console.log('User connected');
 
 			const items = await collection.find().toArray();
-			socket.emit('items', items);
+			socket.emit('action', {
+				type: actionConstants.SET_ITEMS,
+				data: items
+			});
 		});
 
 		io.on('disconnection', () => {

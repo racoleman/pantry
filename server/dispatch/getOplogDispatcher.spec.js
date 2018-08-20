@@ -1,5 +1,8 @@
 const test = require('tape');
 const getOplogDispatcher = require('./getOplogDispatcher');
+const { actionConstants } = require ('../actionConstants');
+
+const mockData = { key: 'value' };
 
 function getMockSocketIo() {
 	return {
@@ -10,52 +13,57 @@ function getMockSocketIo() {
 	};
 }
 
-function getMockPayload() {
-	return { key: 'value' };
-}
-
 test('Emits insert events with expected data', (t) => {
 	const io = getMockSocketIo();
-	const data = getMockPayload();
 	const event = {
 		ns: 'pantry.items',
 		op: 'i',
-		o: data
+		o: mockData
+	};
+	const expectedPayload = {
+		type: actionConstants.ADD_ITEM,
+		data: mockData
 	};
 	const dispatcher = getOplogDispatcher(null, io);
-
 	dispatcher.proxyEvent(event);
-	t.equal(io.emitPayload, data, 'Called io.emit() with expected data');
+
+	t.deepEqual(io.emitPayload, expectedPayload, 'Called io.emit() with expected data');
 	t.end();
 });
 
 test('Emits update events with expected data', (t) => {
 	const io = getMockSocketIo();
-	const data = getMockPayload();
+	const expectedPayload = {
+		type: actionConstants.UPDATE_ITEM,
+		data: mockData
+	};
 	const event = {
 		ns: 'pantry.items',
 		op: 'u',
-		o: data
+		o: mockData
 	};
 	const dispatcher = getOplogDispatcher(null, io);
 
 	dispatcher.proxyEvent(event);
-	t.equal(io.emitPayload, data, 'Called io.emit() with expected data');
+	t.deepEqual(io.emitPayload, expectedPayload, 'Called io.emit() with expected data');
 	t.end();
 });
 
 test('Emits delete events with expected data', (t) => {
 	const io = getMockSocketIo();
-	const data = getMockPayload();
+	const expectedPayload = {
+		type: actionConstants.DELETE_ITEM,
+		data: mockData
+	};
 	const event = {
 		ns: 'pantry.items',
 		op: 'd',
-		o: data
+		o: mockData
 	};
 	const dispatcher = getOplogDispatcher(null, io);
 
 	dispatcher.proxyEvent(event);
-	t.equal(io.emitPayload, data, 'Called io.emit() with expected data');
+	t.deepEqual(io.emitPayload, expectedPayload, 'Called io.emit() with expected data');
 	t.end();
 });
 
@@ -64,7 +72,7 @@ test('Does not emit events for unrecognized namespaces', (t) => {
 	const event = {
 		ns: 'something.else',
 		op: 'i',
-		o: { key: 'value' }
+		o: mockData
 	};
 	const dispatcher = getOplogDispatcher(null, io);
 

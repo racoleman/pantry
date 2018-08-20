@@ -1,7 +1,5 @@
-export const actionConstants = {
-	SET_ITEMS: 'setItems'
-};
+import { actionConstants } from './actionConstants';
 
-export function setItems(items) {
-	return { type: actionConstants.SET_ITEMS, items };
+export function setItems(data) {
+	return { type: actionConstants.SET_ITEMS, data };
 }

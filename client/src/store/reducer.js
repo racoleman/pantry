@@ -1,9 +1,9 @@
-import { actionConstants } from './actions';
+import { actionConstants } from './actionConstants';
 
-const reducer = (state = [], action) => {
-	switch (action.type) {
+const reducer = (state = [], { type, data }) => {
+	switch (type) {
 		case actionConstants.SET_ITEMS:
-			return action.items;
+			return data;
 		default:
 			return state;
 	}

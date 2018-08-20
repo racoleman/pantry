@@ -1,10 +1,11 @@
 const MongoOplog = require('mongo-oplog');
 const config = require('../config');
+const { actionConstants } = require('../actionConstants');
 
 const mongoEventMap = {
-	d: 'delete',
-	i: 'insert',
-	u: 'update'
+	d: actionConstants.DELETE_ITEM,
+	i: actionConstants.ADD_ITEM,
+	u: actionConstants.UPDATE_ITEM
 };
 
 function getOplogDispatcher(oplogURI, io) {
@@ -26,10 +27,13 @@ function getOplogDispatcher(oplogURI, io) {
 		// so we must filter it here instead
 		if( ns.indexOf(config.DB_NAME) < 0) return;
 
-		const socketEvent = mongoEventMap[event];
-		if (socketEvent) {
-			console.info(`${socketEvent} performed on ${ns}`);
-			io.emit(socketEvent, data);
+		const action = mongoEventMap[event];
+		if (action) {
+			console.info(`${action} performed on ${ns}`);
+			io.emit('action', {
+				type: action,
+				data
+			});
 		} else {
 			console.warn(`No event mapping specified for Mongo op '${event}'`);
 		}
