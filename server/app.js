@@ -1,17 +1,11 @@
 const MongoClient = require('mongodb').MongoClient;
 const querystring = require('querystring');
+const socketIo = require('socket.io');
 const config = require('./config');
+const utils = require('./utils');
 const getOplogDispatcher = require('./getOplogDispatcher');
 
 const http = require('http').createServer();
-const socketIo = require('socket.io');
-
-function getDbURI(dbName) {
-	let url = `mongodb://${config.DB_USER}:${config.DB_PASS}@${config.DB_HOST}`;
-	if (dbName) url += `/${dbName}`;
-	url += `?${querystring.stringify(config.DB_QUERY_PARAMS)}`;
-	return url;
-}
 
 let collection;
 
@@ -21,13 +15,13 @@ const app = {
 
 		this.initDb();
 		const io = this.initSocket();
-		const dispatcher = getOplogDispatcher(getDbURI('local'), io);
+		const dispatcher = getOplogDispatcher(utils.getDbURI('local'), io);
 		dispatcher.init();
 	},
 
 	async initDb() {
 		try {
-			const client = await MongoClient.connect(getDbURI());
+			const client = await MongoClient.connect(utils.getDbURI());
 			collection = client.db(config.DB_NAME).collection(config.DB_COLLECTION);
 			console.log('Connected to Mongo database');
 		} catch(err) {
