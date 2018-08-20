@@ -1,17 +1,29 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { updateItem } from '../store/actions';
 import Item from './Item';
 
 function mapStateToProps(state) {
 	return { items: state };
 }
 
-const ItemsList = ({ items }) => (
+function mapDispatchToProps(dispatch) {
+	return {
+		onChange(item) {
+			dispatch(updateItem(item));
+		}
+	}
+}
+
+const ItemsList = ({ items, onChange }) => (
 	<ul className="c-List">
 		{items.map((item) => (
-			<Item key={item._id} name={item.name} quantity={item.quantity} />
+			<Item
+					key={item._id}
+					{...item}
+					onChange={onChange} />
 		))}
 	</ul>
 );
 
-export default connect(mapStateToProps)(ItemsList);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemsList);
