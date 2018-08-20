@@ -7,7 +7,7 @@ function mapStateToProps(state) {
 }
 
 const ItemsList = ({ items }) => (
-	<ul>
+	<ul className="c-List">
 		{items.map((item) => (
 			<Item key={item._id} name={item.name} quantity={item.quantity} />
 		))}
