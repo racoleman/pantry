@@ -30,7 +30,7 @@ class Item extends Component {
 				<input
 						type="number"
 						value={this.props.quantity}
-						onChange={({ target }) => this.onQuantityChange(target.value)}
+						onChange={({ target }) => this.onQuantityChange(parseInt(target.value, 10))}
 						className="two columns" />
 				<button
 						onClick={() => this.onDeleteClick()}

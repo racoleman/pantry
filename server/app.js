@@ -42,17 +42,18 @@ const app = {
 			});
 
 			socket.on('action', ({ type, data }) => {
-				const filter = { _id: new ObjectID(data._id) };
 				switch (type) {
 					case actionConstants.ADD_ITEM:
 						collection.insertOne(data);
 						break;
-					case actionConstants.UPDATE_ITEM:
+					case actionConstants.UPDATE_ITEM: {
+						const filter = { _id: new ObjectID(data._id) };
 						delete data._id;
 						collection.findOneAndUpdate(filter, { $set: data });
 						break;
+					}
 					case actionConstants.DELETE_ITEM:
-						collection.findOneAndDelete(filter);
+						collection.findOneAndDelete({ _id: new ObjectID(data._id) });
 						break;
 				}
 			});

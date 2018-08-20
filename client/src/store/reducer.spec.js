@@ -39,6 +39,23 @@ test('Adds the item', (t) => {
 	t.end();
 });
 
+test('Cannot add duplicate items', (t) => {
+	const initialState = getInitialState();
+	const newItem = {
+		_id: 3,
+		name: 'Apple',
+		quantity: 5
+	}
+	const newState = reducer(initialState, {
+		type: actionConstants.ADD_ITEM,
+		data: newItem
+	});
+
+	const addedItem = findItemById(newState, newItem._id);
+	t.notOk(addedItem, 'Item was not added');
+	t.end();
+});
+
 test('Updates the appropriate item', (t) => {
 	const initialState = getInitialState();
 	const update = {

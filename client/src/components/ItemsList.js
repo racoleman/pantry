@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateItem, deleteItem } from '../store/actions';
+import { addItem, updateItem, deleteItem } from '../store/actions';
 import { emitAction } from '../socketClient';
 import Item from './Item';
+import NewItem from './NewItem';
 
 function mapStateToProps(state) {
 	return { items: state };
@@ -10,6 +11,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
 	return {
+		onAddClick(item) {
+			dispatch(emitAction(addItem(item)));
+		},
 		onChange(item) {
 			dispatch(emitAction(updateItem(item)));
 		},
@@ -19,16 +23,20 @@ function mapDispatchToProps(dispatch) {
 	}
 }
 
-const ItemsList = ({ items, onChange, onDeleteClick }) => (
-	<ul className="c-List">
-		{items.map((item) => (
-			<Item
-					key={item._id}
-					{...item}
-					onChange={onChange}
-					onDeleteClick={onDeleteClick} />
-		))}
-	</ul>
+const ItemsList = ({ items, onAddClick, onChange, onDeleteClick }) => (
+	<div>
+		<ul className="c-List">
+			{items.map((item, index) => (
+				<Item
+						key={index}
+						{...item}
+						onChange={onChange}
+						onDeleteClick={onDeleteClick} />
+			))}
+			<hr />
+			<NewItem onAddClick={onAddClick} />
+		</ul>
+	</div>
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(ItemsList);
