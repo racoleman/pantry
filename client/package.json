@@ -3,17 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "babel-preset-env": "^1.7.0",
+    "babel-register": "^6.26.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "tape": "^4.9.1"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tape -r ./testSetup.js 'src/**/*.spec.js'",
     "eject": "react-scripts eject"
   }
 }
