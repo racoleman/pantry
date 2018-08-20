@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import io from 'socket.io-client';
-import { setItems, updateItem } from './store/actions';
+import { setItems, addItem, updateItem, deleteItem } from './store/actions';
 import reducer from './store/reducer';
 import { actionConstants } from './store/actionConstants';
 import './index.css';
@@ -17,8 +17,14 @@ socket.on('action', ({ type, data }) => {
 		case actionConstants.SET_ITEMS:
 			store.dispatch(setItems(data));
 			break;
+		case actionConstants.ADD_ITEM:
+			store.dispatch(addItem(data));
+			break;
 		case actionConstants.UPDATE_ITEM:
 			store.dispatch(updateItem(data));
+			break;
+		case actionConstants.DELETE_ITEM:
+			store.dispatch(deleteItem(data));
 			break;
 	}
 });
