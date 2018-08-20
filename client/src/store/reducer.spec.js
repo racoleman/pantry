@@ -43,7 +43,6 @@ test('Updates the appropriate item', (t) => {
 	const initialState = getInitialState();
 	const update = {
 		_id: 1,
-		name: 'Apple',
 		quantity: 3
 	};
 	const newState = reducer(initialState, {
@@ -53,7 +52,8 @@ test('Updates the appropriate item', (t) => {
 
 	const updatedItem = findItemById(newState, update._id);
 	const initialItem = findItemById(initialState, update._id);
-	t.deepEqual(updatedItem, update, 'Item is updated');
+	t.equal(updatedItem.quantity, 3, 'Quantity is updated');
+	t.equal(updatedItem.name, 'Apple', 'Item was not overwritten');
 	t.notDeepEqual(initialItem, update, 'Update was immutable');
 	t.end();
 });

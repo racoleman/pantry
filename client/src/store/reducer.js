@@ -10,7 +10,7 @@ const reducer = (state = [], { type, data }) => {
 			return items;
 		case actionConstants.UPDATE_ITEM: {
 			const updateIdx = items.findIndex((item) => item._id === data._id);
-			items[updateIdx] = data;
+			items[updateIdx] = Object.assign({}, items[updateIdx], data);
 			return items;
 		}
 		case actionConstants.DELETE_ITEM: {
