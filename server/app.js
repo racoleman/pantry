@@ -3,7 +3,7 @@ const querystring = require('querystring');
 const socketIo = require('socket.io');
 const config = require('./config');
 const utils = require('./utils');
-const getOplogDispatcher = require('./getOplogDispatcher');
+const getOplogDispatcher = require('./dispatch/getOplogDispatcher');
 
 const http = require('http').createServer();
 
