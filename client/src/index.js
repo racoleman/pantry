@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import io from 'socket.io-client';
-import { setItems } from './actions';
-import reducer from './reducer';
+import { setItems } from './store/actions';
+import reducer from './store/reducer';
 import './index.css';
 import App from './components/App';
 
