@@ -15,6 +15,10 @@ class Item extends Component {
 		});
 	}
 
+	onDeleteClick() {
+		this.props.onDeleteClick({ _id: this.props._id });
+	}
+
 	render() {
 		return (
 			<li className="c-List_Item row">
@@ -22,12 +26,17 @@ class Item extends Component {
 						type="text"
 						value={this.props.name}
 						onChange={({ target }) => this.onNameChange(target.value)}
-						className="ten columns" />
+						className="seven columns" />
 				<input
 						type="number"
 						value={this.props.quantity}
 						onChange={({ target }) => this.onQuantityChange(target.value)}
 						className="two columns" />
+				<button
+						onClick={() => this.onDeleteClick()}
+						className="three columns">
+					Delete
+				</button>
 			</li>
 		);
 	}

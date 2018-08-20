@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateItem } from '../store/actions';
+import { updateItem, deleteItem } from '../store/actions';
 import Item from './Item';
 
 function mapStateToProps(state) {
@@ -11,17 +11,21 @@ function mapDispatchToProps(dispatch) {
 	return {
 		onChange(item) {
 			dispatch(updateItem(item));
+		},
+		onDeleteClick(item) {
+			dispatch(deleteItem(item));
 		}
 	}
 }
 
-const ItemsList = ({ items, onChange }) => (
+const ItemsList = ({ items, onChange, onDeleteClick }) => (
 	<ul className="c-List">
 		{items.map((item) => (
 			<Item
 					key={item._id}
 					{...item}
-					onChange={onChange} />
+					onChange={onChange}
+					onDeleteClick={onDeleteClick} />
 		))}
 	</ul>
 );
