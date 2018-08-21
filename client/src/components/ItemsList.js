@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { addItem, updateItem, deleteItem } from '../store/actions';
 import { emitAction } from '../socketClient';
 import Item from './Item';
@@ -25,20 +26,25 @@ function mapDispatchToProps(dispatch) {
 
 const ItemsList = ({ items, onAddClick, onChange, onDeleteClick }) => (
 	<div>
-		<header className="row">
-			<p className="seven columns">Item</p>
-			<p className="two columns">Quantity</p>
+		<header className="c-List_Header">
+			<span className="c-List_NameHeading">Item</span>
+			<span className="c-List_QtyHeading">Quantity</span>
 		</header>
-		<ul className="c-List">
-			{items.map((item, index) => (
-				<Item
+		<TransitionGroup component="ul" className="c-List">
+				{items.map((item, index) => (
+					<CSSTransition
 						key={index}
-						{...item}
-						onChange={onChange}
-						onDeleteClick={onDeleteClick} />
-			))}
+						classNames="c-List_Item"
+						exit={false}
+						timeout={300}>
+						<Item
+								{...item}
+								onChange={onChange}
+								onDeleteClick={onDeleteClick} />
+					</CSSTransition>
+				))}
 			<NewItem onAddClick={onAddClick} />
-		</ul>
+		</TransitionGroup>
 	</div>
 );
 

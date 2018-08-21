@@ -1,11 +1,20 @@
+:root {
+  --col-name-width: 35rem;
+  --col-qty-width: 5.5rem;
+}
+
 body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
 }
 
+input, button {
+  margin-bottom: 0;
+}
+
 .App {
-  max-width: 600px;
+  max-width: 56rem;
   margin-top: 50px;
 }
 
@@ -13,14 +22,59 @@ body {
   text-align: center;
 }
 
+.c-List_Header {
+  display: flex;
+  justify-content: flex-start;
+  padding: 8px;
+}
+
+.c-List_NameHeading {
+  width: var(--col-name-width);
+  margin-right: 1.5rem;
+}
+
+.c-List_QtyHeading {
+  width: var(--col-qty-width);
+}
+
 .c-List_Item {
-  padding: 0;
+  display: flex;
+  margin: 0;
+  padding: 8px;
   list-style-type: none;
+  transition: background-color 300ms;
+  border-radius: 5px;
 }
 
 .c-List_Item-new {
-  padding-top: 25px;
+  margin-top: 8px;
+  padding-top: 15px;
   border-top: 1px solid #eee;
+}
+
+.c-List_Item-enter {
+  background-color: #BBECD6;
+}
+
+.c-List_Item-exit {
+  background-color: #FBBEB6;
+}
+
+.c-List_ItemField {
+  margin-right: 1.5rem;
+}
+
+.c-List_ItemField-name {
+  width: var(--col-name-width);
+}
+
+.c-List_ItemField-qty {
+  width: var(--col-qty-width);
+}
+
+.c-List_ItemBtn {
+  width: 10em;
+  background-color: #fff;
 }
 
 .button-primary[disabled],

@@ -21,20 +21,21 @@ class Item extends Component {
 
 	render() {
 		return (
-			<li className="c-List_Item row">
+			<li className="c-List_Item">
 				<input
 						type="text"
 						value={this.props.name}
 						onChange={({ target }) => this.onNameChange(target.value)}
-						className="seven columns" />
+						className="c-List_ItemField c-List_ItemField-name" />
 				<input
 						type="number"
 						value={this.props.quantity}
+						min="1"
 						onChange={({ target }) => this.onQuantityChange(parseInt(target.value, 10))}
-						className="two columns" />
+						className="c-List_ItemField c-List_ItemField-qty" />
 				<button
 						onClick={() => this.onDeleteClick()}
-						className="three columns">
+						className="c-List_ItemBtn">
 					Delete
 				</button>
 			</li>
