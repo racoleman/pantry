@@ -33,9 +33,8 @@ const ItemsList = ({ items, onAddClick, onChange, onDeleteClick }) => (
 		<TransitionGroup component="ul" className="c-List">
 				{items.map((item, index) => (
 					<CSSTransition
-						key={index}
+						key={item.name}
 						classNames="c-List_Item"
-						exit={false}
 						timeout={300}>
 						<Item
 								{...item}
