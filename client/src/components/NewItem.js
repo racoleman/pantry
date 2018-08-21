@@ -14,7 +14,9 @@ class NewItem extends Component {
 	}
 
 	onAddClick() {
-		this.props.onAddClick(this.state);
+		const item = Object.assign({}, this.state);
+		if (item.quantity === '') item.quantity = 0;
+		this.props.onAddClick(item);
 		this.setState(getInitialState());
 	}
 
@@ -37,7 +39,7 @@ class NewItem extends Component {
 				<button
 						onClick={() => this.onAddClick()}
 						className="c-List_ItemBtn button-primary"
-						disabled={!this.state.name.length || !this.state.quantity}>
+						disabled={!this.state.name.length}>
 					Add
 				</button>
 			</li>
