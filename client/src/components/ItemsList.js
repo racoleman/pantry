@@ -25,6 +25,10 @@ function mapDispatchToProps(dispatch) {
 
 const ItemsList = ({ items, onAddClick, onChange, onDeleteClick }) => (
 	<div>
+		<header className="row">
+			<p className="seven columns">Item</p>
+			<p className="two columns">Quantity</p>
+		</header>
 		<ul className="c-List">
 			{items.map((item, index) => (
 				<Item
@@ -33,7 +37,6 @@ const ItemsList = ({ items, onAddClick, onChange, onDeleteClick }) => (
 						onChange={onChange}
 						onDeleteClick={onDeleteClick} />
 			))}
-			<hr />
 			<NewItem onAddClick={onAddClick} />
 		</ul>
 	</div>

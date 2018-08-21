@@ -15,7 +15,7 @@ class NewItem extends Component {
 
 	render() {
 		return (
-			<li className="c-List_Item row">
+			<li className="c-List_Item c-List_Item-new row">
 				<input
 						type="text"
 						value={this.state.name}
@@ -30,7 +30,8 @@ class NewItem extends Component {
 						className="two columns" />
 				<button
 						onClick={() => this.onAddClick()}
-						className="button-primary three columns">
+						className="button-primary three columns"
+						disabled={!this.state.name.length || !this.state.quantity}>
 					Add
 				</button>
 			</li>

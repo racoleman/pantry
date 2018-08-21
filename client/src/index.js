@@ -26,6 +26,7 @@ socketClient.on('action', ({ type, data }) => {
 		case actionConstants.DELETE_ITEM:
 			store.dispatch(deleteItem(data));
 			break;
+		// no default
 	}
 });
 
