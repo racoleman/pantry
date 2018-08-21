@@ -5,6 +5,9 @@
   "dependencies": {
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
+    "browser-env": "^3.2.5",
+    "enzyme": "^3.4.4",
+    "enzyme-adapter-react-16": "^1.2.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",

@@ -28,17 +28,17 @@ class NewItem extends Component {
 						value={this.state.name}
 						onChange={({ target }) => this.setState({ name: target.value })}
 						placeholder="Item Name"
-						className="c-List_ItemField c-List_ItemField-name" />
+						className="c-List_ItemField c-List_ItemField-name qa-List_ItemName" />
 				<input
 						type="number"
 						value={this.state.quantity}
 						min="1"
 						onChange={({ target }) => this.setState({ quantity: parseInt(target.value, 10) })}
 						placeholder="Qty"
-						className="c-List_ItemField c-List_ItemField-qty" />
+						className="c-List_ItemField c-List_ItemField-qty qa-List_ItemQty" />
 				<button
 						onClick={() => this.onAddClick()}
-						className="c-List_ItemBtn button-primary"
+						className="c-List_ItemBtn qa-List_AddBtn button-primary"
 						disabled={!this.state.name.length}>
 					Add
 				</button>
