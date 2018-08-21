@@ -26,17 +26,17 @@ test('Entered values are passed to add handler', (t) => {
 	t.end();
 });
 
-test('Fields are emptied after add', (t) => {
+test('State is reset after add', (t) => {
 	const newItem = getComponent();
+	newItem.setState({
+		name: 'test',
+		quantity: 5
+	});
+	newItem.instance().onAddClick();
 
-	const nameField = newItem.find('.qa-List_ItemName');
-	nameField.simulate('change', { target: { value: 'test' }});
-	const qtyField = newItem.find('.qa-List_ItemQty');
-	qtyField.simulate('change', { target: { value: '5' }});
-	newItem.find('.qa-List_AddBtn').simulate('click');
-
-	t.equal(nameField.prop('value'), '', 'Name field is empty');
-	t.equal(qtyField.prop('value'), '', 'Quantity field is empty');
+	const { name, quantity } = newItem.state();
+	t.equal(name, '', 'Name field is empty');
+	t.equal(quantity, '', 'Quantity field is empty');
 	t.end();
 });
 
@@ -62,9 +62,8 @@ test('Quantity is set to 0 when not entered', (t) => {
 	const mockOnAddClick = (item) => addedItem = item;
 	const newItem = getComponent(mockOnAddClick);
 
-	const nameField = newItem.find('.qa-List_ItemName');
-	nameField.simulate('change', { target: { value: 'test' }});
-	newItem.find('.qa-List_AddBtn').simulate('click');
+	newItem.setState({ name: 'test' });
+	newItem.instance().onAddClick();
 
 	t.equal(addedItem.quantity, 0, 'Quantity is set to 0');
 	t.end();
